@@ -6,15 +6,14 @@ import utilStyles from "../styles/utils.module.css";
 const name = "Tera Mind";
 export const siteTitle = "Tera Mind's blog";
 
+const renderAvatar = (className, alt) => <img src="/images/profile.jpg" className={className} alt={alt} />;
+
 export default function Layout({ children, home }) {
 	return (
 		<div className={styles.container}>
 			<Head>
 				<link rel="icon" href="/favicon.ico" />
-				<meta
-					name="description"
-					content="Learn how to build a personal website using Next.js"
-				/>
+				<meta name="description" content="Learn how to build a personal website using Next.js" />
 				<meta
 					property="og:image"
 					content={`https://og-image.now.sh/${encodeURI(
@@ -27,35 +26,21 @@ export default function Layout({ children, home }) {
 			<header className={styles.header}>
 				{home ? (
 					<>
-						<img
-							src="/images/profile.jpg"
-							className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
-							alt={name}
-						/>
+						{renderAvatar(`${styles.headerHomeImage} ${utilStyles.borderCircle}`, name)}
 						<Link href="/posts/first-post">
 							<a>
-								<h1 className={utilStyles.heading2Xl}>
-									{name}
-								</h1>
+								<h1 className={utilStyles.heading2Xl}>{name}</h1>
 							</a>
 						</Link>
 					</>
 				) : (
 					<>
 						<Link href="/">
-							<a>
-								<img
-									src="/images/profile.jpg"
-									className={`${styles.headerImage} ${utilStyles.borderCircle}`}
-									alt={name}
-								/>
-							</a>
+							<a>{renderAvatar(`${styles.headerImage} ${utilStyles.borderCircle}`, name)}</a>
 						</Link>
 						<h2 className={utilStyles.headingLg}>
 							<Link href="/">
-								<a className={utilStyles.colorInherit}>
-									{name}
-								</a>
+								<a className={utilStyles.colorInherit}>{name}</a>
 							</Link>
 						</h2>
 					</>
