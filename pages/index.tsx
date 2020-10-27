@@ -1,11 +1,17 @@
+import { GetStaticProps } from "next";
 import Link from "next/link";
 import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
-import getSortedPostsData from "../utils/postsUtils";
-import Date from "../components/date";
+import { getSortedPostsData } from "../utils/postsUtils";
+import Layout, { siteTitle } from "../components/Layout";
+import Date from "../components/Date";
+import { IPostData } from "../interfaces/post-data";
 
-export default function Home({ allPostsData }) {
+interface IProps {
+	allPostsData: IPostData[];
+}
+
+const Home = ({ allPostsData }: IProps) => {
 	return (
 		<Layout home>
 			<Head>
@@ -37,13 +43,15 @@ export default function Home({ allPostsData }) {
 			</section>
 		</Layout>
 	);
-}
+};
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<IProps> = async () => {
 	const allPostsData = getSortedPostsData();
 	return {
 		props: {
 			allPostsData
 		}
 	};
-}
+};
+
+export default Home;

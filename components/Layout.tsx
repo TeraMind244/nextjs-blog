@@ -6,9 +6,11 @@ import utilStyles from "../styles/utils.module.css";
 const name = "Tera Mind";
 export const siteTitle = "Tera Mind's blog";
 
-const renderAvatar = (className, alt) => <img src="/images/profile.jpg" className={className} alt={alt} />;
+const renderAvatar = (className: string, alt: string) => (
+	<img src="/images/profile.jpg" className={className} alt={alt} />
+);
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home = false }) {
 	return (
 		<div className={styles.container}>
 			<Head>
