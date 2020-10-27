@@ -29,11 +29,7 @@ export default function Layout({ children, home = false }) {
 				{home ? (
 					<>
 						{renderAvatar(`${styles.headerHomeImage} ${utilStyles.borderCircle}`, name)}
-						<Link href="/posts/first-post">
-							<a>
-								<h1 className={utilStyles.heading2Xl}>{name}</h1>
-							</a>
-						</Link>
+						<h1 className={utilStyles.heading2Xl}>{name}</h1>
 					</>
 				) : (
 					<>
