@@ -1,11 +1,11 @@
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import remark from "remark";
 import html from "remark-html";
-import { IPostData } from "../interfaces/post-data";
+import { IPostData } from "../interfaces/Post";
 
-const postsDirectory = path.join(process.cwd(), "posts");
+const postsDirectory = path.join(process.cwd(), "data", "posts");
 
 const getFileName = (fileName: string) => fileName.replace(/\.md$/, "");
 

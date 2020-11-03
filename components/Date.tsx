@@ -1,11 +1,14 @@
-import { parseISO, format } from "date-fns";
 import utilStyles from "../styles/utils.module.css";
+import { formatDate } from "../utils/DateTimeHelper";
 
-const Date = ({ dateString }) => {
-	const date = parseISO(dateString);
+interface IProps {
+	dateString: string;
+}
+
+const Date = ({ dateString }: IProps) => {
 	return (
 		<small className={utilStyles.lightText}>
-			<time dateTime={dateString}>{format(date, "LLLL dd, yyyy")}</time>
+			<time dateTime={dateString}>{formatDate(dateString)}</time>
 		</small>
 	);
 };

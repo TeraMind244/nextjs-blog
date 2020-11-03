@@ -1,5 +1,5 @@
 export interface IPostData {
 	id: string;
 	contentHtml?: string;
-	[key: string]: string | string[];
+	[key: string]: string;
 }

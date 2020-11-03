@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import styles from "../styles/layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 
-const name = "Tera Mind";
-export const siteTitle = "Tera Mind's blog";
+const name = "Tri Che";
+export const siteTitle = "Tri Che's blog";
 
 interface IProps {
 	home?: boolean;
