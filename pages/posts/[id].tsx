@@ -3,8 +3,8 @@ import Head from "next/head";
 import Date from "../../components/Date";
 import Layout from "../../components/Layout";
 import { IPostData } from "../../interfaces/Post";
+import { getAllPostIds, getDetailPostData } from "../../services/BlogService";
 import utilStyles from "../../styles/utils.module.css";
-import { getAllPostIds, getDetailPostData } from "../../utils/PostsUtils";
 
 interface IProps {
 	postData: IPostData;

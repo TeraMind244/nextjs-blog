@@ -4,8 +4,8 @@ import Link from "next/link";
 import Date from "../components/Date";
 import Layout, { siteTitle } from "../components/Layout";
 import { IPostData } from "../interfaces/Post";
+import { getSortedPostsData } from "../services/BlogService";
 import utilStyles from "../styles/utils.module.css";
-import { getSortedPostsData } from "../utils/PostsUtils";
 
 interface IProps {
 	allPostsData: IPostData[];
