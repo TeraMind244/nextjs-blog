@@ -17,5 +17,5 @@ export const addMetadata = async (slug: string, metadata: IMetadata): Promise<vo
 		...allMetadata,
 		[slug]: metadata
 	};
-	await saveFile(metadataFilePath, JSON.stringify(newData));
+	await saveFile(metadataFilePath, JSON.stringify(newData, null, "\t"));
 };
