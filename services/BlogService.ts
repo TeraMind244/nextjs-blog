@@ -3,9 +3,8 @@ import path from "path";
 import slug from "slug";
 import { AllPostIdParams, IMetadata, IPostData } from "../interfaces";
 import { saveFile } from "../utils/FileHelper";
-import { prependMetadata } from "../utils/MarkdownHelper";
 import MarkdownParser from "../utils/MarkdownParser";
-import { getMetadata } from "./MetadataService";
+import { addMetadata, getMetadata } from "./MetadataService";
 
 const postsDirectory = path.join(process.cwd(), "data", "posts");
 const getSlug = (fileName: string): string => fileName.replace(/\.md$/, "");
@@ -15,7 +14,11 @@ export const saveBlog = async (title: string, markdown: string, date = Date.now(
 	const fileName = getFileName(slug(title));
 
 	// TODO Save blog + save metadata
-	await saveFile(path.join(postsDirectory, fileName), prependMetadata(title, date, markdown));
+	await addMetadata(getSlug(fileName), {
+		title,
+		date
+	});
+	await saveFile(path.join(postsDirectory, fileName), markdown);
 };
 
 export const getSortedPostsData = async (): Promise<IPostData[]> => {

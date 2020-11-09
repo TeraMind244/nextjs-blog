@@ -1,10 +1,1 @@
-{
-	"pre-rendering": {
-		"title": "Two Forms of Pre-rendering",
-		"date": 1604047372392
-	},
-	"ssg-ssr": {
-		"title": "When to Use Static Generation v.s. Server-side Rendering",
-		"date": 1603874584705
-	}
-}
+{"pre-rendering":{"title":"Two Forms of Pre-rendering","date":1604047372392},"ssg-ssr":{"title":"When to Use Static Generation v.s. Server-side Rendering","date":1603874584705},"test":{"title":"Test","date":1604912692983}}
