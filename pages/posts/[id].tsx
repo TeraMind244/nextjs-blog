@@ -1,43 +1,44 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Date from "../../components/Date";
 import Layout from "../../components/Layout";
-import { IPostData } from "../../interfaces/Post";
-import { getAllPostIds, getDetailPostData } from "../../services/BlogService";
+import { Page } from "../../constant";
+import { IPostData } from "../../interfaces";
+import { getAllPostIds, getPostData } from "../../services/BlogService";
 import utilStyles from "../../styles/utils.module.css";
 
 interface IProps {
 	postData: IPostData;
 }
 
-const Post = ({ postData }: IProps) => {
+const Post: NextPage<IProps> = ({ postData }) => {
 	return (
 		<>
 			<Head>
 				<title>{postData.title}</title>
 			</Head>
-			<Layout>
+			<Layout page={Page.BLOG_DETAIL}>
 				<article>
 					<h1 className={utilStyles.headingXl}>{postData.title}</h1>
-					<Date dateString={postData.date} />
+					<Date date={postData.date} />
 					<br />
-					<div dangerouslySetInnerHTML={{ __html: postData.contentHtml }} />
+					<div dangerouslySetInnerHTML={{ __html: postData.content || "" }} />
 				</article>
 			</Layout>
 		</>
 	);
-}
+};
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const paths = getAllPostIds();
+	const paths = await getAllPostIds();
 	return {
 		paths,
-		fallback: false
+		fallback: true
 	};
 };
 
 export const getStaticProps: GetStaticProps<IProps> = async ({ params }) => {
-	const postData = await getDetailPostData(params.id as string);
+	const postData = await getPostData(params!.id as string, true);
 	return {
 		props: {
 			postData

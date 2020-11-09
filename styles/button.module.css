@@ -1,0 +1,16 @@
+.button {
+	padding: 5px 10px;
+    text-transform: capitalize;
+    background-color: #333333;
+    color: #ffffff;
+    font-size: 1.125rem;
+    border-radius: 5px;
+}
+
+.button-normal {
+	text-transform: unset;
+}
+
+.button-right {
+	float: right;
+}

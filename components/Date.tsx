@@ -1,14 +1,14 @@
 import utilStyles from "../styles/utils.module.css";
-import { formatDate } from "../utils/DateTimeHelper";
+import { formatDate, formatHtmlDate } from "../utils/DateTimeHelper";
 
 interface IProps {
-	dateString: string;
+	date: number;
 }
 
-const Date = ({ dateString }: IProps) => {
+const Date: React.FC<IProps> = ({ date }) => {
 	return (
 		<small className={utilStyles.lightText}>
-			<time dateTime={dateString}>{formatDate(dateString)}</time>
+			<time dateTime={formatHtmlDate(date)}>{formatDate(date)}</time>
 		</small>
 	);
 };

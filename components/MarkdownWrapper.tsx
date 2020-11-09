@@ -3,7 +3,7 @@ import { createBlog } from "../utils/RequestHelper";
 import MarkdownEditor from "./MarkdownEditor";
 import MarkdownPreview from "./MarkdownPreview";
 
-const MarkdownWrapper = () => {
+const MarkdownWrapper: React.FC = () => {
 	const [markdown, setMarkdown] = useState("");
 	const [title, setTitle] = useState("");
 
@@ -15,11 +15,15 @@ const MarkdownWrapper = () => {
 		setTitle(event.target.value);
 	};
 
-	const onClickCreateButtonHandler = async () => {
+	const onClickSaveButtonHandler = async () => {
 		await createBlog(title, markdown);
 	};
 
 	return (
+		<>
+		<div>
+
+		</div>
 		<table width="100%">
 			<tbody>
 				<tr>
@@ -44,11 +48,12 @@ const MarkdownWrapper = () => {
 				<tr>
 					<td></td>
 					<td>
-						<button onClick={onClickCreateButtonHandler}>Create</button>
+						<button onClick={onClickSaveButtonHandler}>Save</button>
 					</td>
 				</tr>
 			</tfoot>
 		</table>
+		</>
 	);
 };
 

@@ -1,5 +1,5 @@
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 
-export const formatDate = (dateString: string): string => format(parseISO(dateString), "LLLL dd, yyyy");
+export const formatDate = (date = Date.now()): string => format(date, "LLLL dd, yyyy");
 
-export const slugifyDate = (date = new Date()): string => format(date, "yyyy-MM-dd");
+export const formatHtmlDate = (date = Date.now()): string => format(date, "yyyy-MM-dd");

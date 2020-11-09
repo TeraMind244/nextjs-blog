@@ -1,36 +1,27 @@
-import fs from "fs";
-import matter from "gray-matter";
+import fs from "fs-extra";
 import path from "path";
-import remark from "remark";
-import html from "remark-html";
 import slug from "slug";
-import { IPostData } from "../interfaces/Post";
-import { slugifyDate } from "../utils/DateTimeHelper";
+import { AllPostIdParams, IMetadata, IPostData } from "../interfaces";
+import { saveFile } from "../utils/FileHelper";
 import { prependMetadata } from "../utils/MarkdownHelper";
-import { saveFile } from "./FileService";
+import MarkdownParser from "../utils/MarkdownParser";
+import { getMetadata } from "./MetadataService";
 
 const postsDirectory = path.join(process.cwd(), "data", "posts");
-const getFileName = (fileName: string) => fileName.replace(/\.md$/, "");
+const getSlug = (fileName: string): string => fileName.replace(/\.md$/, "");
+const getFileName = (slug: string): string => `${slug}.md`;
 
-export const saveBlog = async (title: string, markdown: string): Promise<void> => {
-	const fileName = `${slug(title)}.md`;
+export const saveBlog = async (title: string, markdown: string, date = Date.now()): Promise<void> => {
+	const fileName = getFileName(slug(title));
 
-	const dateString = slugifyDate();
-	await saveFile(path.join(postsDirectory, fileName), prependMetadata(title, dateString, markdown));
-}
+	// TODO Save blog + save metadata
+	await saveFile(path.join(postsDirectory, fileName), prependMetadata(title, date, markdown));
+};
 
-export const getSortedPostsData = () => {
-	// Get file names under /posts
-	const fileNames = fs.readdirSync(postsDirectory);
-	const allPostsData = fileNames.map(fileName => {
-		// Remove ".md" from file name to get id
-		const id = getFileName(fileName);
+export const getSortedPostsData = async (): Promise<IPostData[]> => {
+	const allPostsData = await getAllPostsData();
 
-		return getPostData(id);
-	});
-
-	// Sort posts by date
-	return allPostsData.sort((a: any, b: any) => {
+	return allPostsData.sort((a, b) => {
 		if (a.date < b.date) {
 			return 1;
 		} else {
@@ -39,61 +30,41 @@ export const getSortedPostsData = () => {
 	});
 };
 
-interface IAllPostIdParam {
-	params: IPostData;
-}
-type AllPostIdParams = IAllPostIdParam[];
+const getAllPostsData = async (): Promise<IPostData[]> => {
+	// Get file names under /posts
+	const fileNames = await fs.readdir(postsDirectory);
 
-export const getAllPostIds = (): AllPostIdParams => {
-	const fileNames = fs.readdirSync(postsDirectory);
+	return await getAllPostsDataFromFileNames(fileNames);
+};
+
+const getAllPostsDataFromFileNames = async (fileNames: string[]): Promise<IPostData[]> => {
+	const allPostsData: IPostData[] = [];
+	for (const fileName of fileNames) {
+		allPostsData.push(await getPostData(getSlug(fileName)));
+	}
+	return allPostsData;
+}
+
+export const getAllPostIds = async (): Promise<AllPostIdParams> => {
+	const fileNames = await fs.readdir(postsDirectory);
 
 	return fileNames.map(fileName => {
 		return {
 			params: {
-				id: getFileName(fileName)
+				id: getSlug(fileName)
 			}
 		};
 	});
 };
 
-export const renderHtmlFromMarkdown = async (markdown: string): Promise<string> => {
-	const processedContent = await remark().use(html).process(markdown);
-	return processedContent.toString();
-};
-
-export const getAllMatterData = (id: string): matter.GrayMatterFile<string> => {
-	// Read markdown file as string
-	const fullPath = path.join(postsDirectory, `${id}.md`);
-	const fileContents = fs.readFileSync(fullPath, "utf8");
-
-	// Use gray-matter to parse the post metadata section
-	return matter(fileContents);
-};
-
-export const getPostData = (id: string): IPostData => {
-	const matterResult = getAllMatterData(id);
+export const getPostData = async (slug: string, detail = false): Promise<IPostData> => {
+	const postContent = detail ? MarkdownParser.parse((await fs.readFile(path.join(postsDirectory, getFileName(slug)))).toString()) : "";
+	const metadata = (await getMetadata(slug)) as IMetadata;
 
 	// Combine the data with the id
 	return {
-		id,
-		...matterResult.data
-	} as IPostData;
-};
-
-export const getDetailPostData = async (id: string): Promise<IPostData> => {
-	// Read markdown file as string
-	const fullPath = path.join(postsDirectory, `${id}.md`);
-	const fileContents = fs.readFileSync(fullPath, "utf8");
-
-	// Use gray-matter to parse the post metadata section
-	const matterResult = matter(fileContents);
-
-	const contentHtml = await renderHtmlFromMarkdown(matterResult.content);
-
-	// Combine the data with the id
-	return {
-		id,
-		contentHtml,
-		...matterResult.data
-	} as IPostData;
+		slug: slug,
+		content: postContent,
+		...metadata
+	};
 };

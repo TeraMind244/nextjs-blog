@@ -1,9 +1,10 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Date from "../components/Date";
-import Layout, { siteTitle } from "../components/Layout";
-import { IPostData } from "../interfaces/Post";
+import Layout from "../components/Layout";
+import { siteTitle } from "../constant";
+import { IPostData } from "../interfaces";
 import { getSortedPostsData } from "../services/BlogService";
 import utilStyles from "../styles/utils.module.css";
 
@@ -11,32 +12,22 @@ interface IProps {
 	allPostsData: IPostData[];
 }
 
-const Home = ({ allPostsData }: IProps) => {
+const Home: NextPage<IProps> = ({ allPostsData }) => {
 	return (
-		<Layout home>
+		<Layout>
 			<Head>
 				<title>{siteTitle}</title>
 			</Head>
-			<section className={utilStyles.headingMd}>
-				<p>Tomato is love. Tomato is life.</p>
-			</section>
-			<section>
-				<Link href="/create">
-					<a>
-						<button>CREATE</button>
-					</a>
-				</Link>
-			</section>
 			<section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
 				<h2 className={utilStyles.headingLg}>Blog</h2>
 				<ul className={utilStyles.list}>
-					{allPostsData.map(({ id, date, title }) => (
+					{allPostsData.map(({ slug: id, date, title }) => (
 						<li className={utilStyles.listItem} key={id}>
 							<Link href={`/posts/${id}`}>
 								<a>{title}</a>
 							</Link>
 							<br />
-							<Date dateString={date} />
+							<Date date={date} />
 						</li>
 					))}
 				</ul>
@@ -46,7 +37,7 @@ const Home = ({ allPostsData }: IProps) => {
 };
 
 export const getStaticProps: GetStaticProps<IProps> = async () => {
-	const allPostsData = getSortedPostsData();
+	const allPostsData = await getSortedPostsData();
 	return {
 		props: {
 			allPostsData

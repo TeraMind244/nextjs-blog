@@ -1,8 +1,8 @@
-export const prependMetadata = (title: string, dateString: string, markdown: string) => {
+export const prependMetadata = (title: string, date: number, markdown: string) => {
 	return [
 		"---",
 		`title: "${title}"`,
-		`date: "${dateString}"`,
+		`date: "${date}"`,
 		"---",
 		""
 	].join("\n") + markdown;

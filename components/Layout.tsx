@@ -1,56 +1,64 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { authorName, Page, siteTitle } from "../constant";
+import buttonStyles from "../styles/button.module.css";
 import styles from "../styles/layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 
-const name = "Tri Che";
-export const siteTitle = "Tri Che's blog";
-
 interface IProps {
-	home?: boolean;
-	children?: React.ReactNode;
+	page?: Page;
 }
 
-const Layout = ({ children, home = false }: IProps) => {
-	const router = useRouter();
-	const handleBackLinkClicked = () => router.back();
-
+const Layout: React.FC<IProps> = ({ children, page = Page.HOME }) => {
 	return (
 		<div className={styles.container}>
+			{page !== Page.CREATE && (
+				<div>
+					<Link href="/create">
+						<a>
+							<button className={`${buttonStyles.button} ${buttonStyles["button-right"]}`}>Create</button>
+						</a>
+					</Link>
+				</div>
+			)}
 			{renderHeadAttributes()}
 			<header className={styles.header}>
-				{home ? (
+				{page === Page.HOME ? (
 					<>
-						{renderAvatar(`${styles.headerHomeImage} ${utilStyles.borderCircle}`, name)}
-						<h1 className={utilStyles.heading2Xl}>{name}</h1>
+						{renderAvatar(`${styles.headerHomeImage} ${utilStyles.borderCircle}`)}
+						<h1 className={utilStyles.heading2Xl}>{authorName}</h1>
+						<section className={utilStyles.headingSm}>
+							<p>Tomato is love. Tomato is life.</p>
+						</section>
 					</>
 				) : (
 					<>
 						<Link href="/">
-							<a>{renderAvatar(`${styles.headerImage} ${utilStyles.borderCircle}`, name)}</a>
+							<a>{renderAvatar(`${styles.headerImage} ${utilStyles.borderCircle}`)}</a>
 						</Link>
 						<h2 className={utilStyles.headingLg}>
 							<Link href="/">
-								<a className={utilStyles.colorInherit}>{name}</a>
+								<a className={utilStyles.colorInherit}>{authorName}</a>
 							</Link>
 						</h2>
 					</>
 				)}
 			</header>
 			<main>{children}</main>
-			{!home && (
+			{page !== Page.HOME && (
 				<div className={styles.backToHome}>
-					<button onClick={handleBackLinkClicked}>← Back</button>
+					<Link href="/">
+						<a>
+							<button className={`${buttonStyles.button} ${buttonStyles["button-right"]}`}>← Back</button>
+						</a>
+					</Link>
 				</div>
 			)}
 		</div>
 	);
 };
 
-const renderAvatar = (className: string, alt: string) => (
-	<img src="/images/profile.jpg" className={className} alt={alt} />
-);
+const renderAvatar = (className: string) => <img src="/images/square.jpg" className={className} alt={authorName} />;
 
 const renderHeadAttributes = () => (
 	<Head>
