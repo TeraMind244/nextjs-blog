@@ -12,6 +12,9 @@ interface IProps {
 }
 
 const Post: NextPage<IProps> = ({ postData }) => {
+	if (!postData) {
+		return <div>Oops - 404! Post not found!</div>;
+	}
 	return (
 		<Layout page={Page.BLOG_DETAIL}>
 			<Head>
@@ -35,8 +38,8 @@ export const getStaticPaths: GetStaticPaths<IPostId> = async () => {
 	};
 };
 
-export const getStaticProps: GetStaticProps<IProps> = async ({ params }) => {
-	const postData = await getPostData(params!.id as string, true);
+export const getStaticProps: GetStaticProps<IProps, IPostId> = async ({ params }) => {
+	const postData = await getPostData(params.id, true);
 	return {
 		props: {
 			postData
