@@ -55,3 +55,12 @@
 .lightText {
 	color: #999;
 }
+
+.borderless {
+	border: none !important;
+	border-color: transparent !important;
+}
+
+.borderless:focus {
+	outline: unset;
+}

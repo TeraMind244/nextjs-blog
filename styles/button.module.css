@@ -4,13 +4,19 @@
     background-color: #333333;
     color: #ffffff;
     font-size: 1.125rem;
-    border-radius: 5px;
+	border-radius: 5px;
 }
 
-.button-normal {
+.normal {
 	text-transform: unset;
 }
 
-.button-right {
+.right {
 	float: right;
+}
+
+.primary {
+	margin: auto;
+	background-color: green;
+	color: white;
 }

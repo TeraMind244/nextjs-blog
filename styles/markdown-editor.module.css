@@ -1,4 +1,5 @@
 .editor-textarea {
 	width: 100%;
 	font-size: 18px;
+	font-family: inherit;
 }

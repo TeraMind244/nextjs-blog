@@ -13,7 +13,6 @@ const getFileName = (slug: string): string => `${slug}.md`;
 export const saveBlog = async (title: string, markdown: string, date = Date.now()): Promise<void> => {
 	const fileName = getFileName(slug(title));
 
-	// TODO Save blog + save metadata
 	await addMetadata(getSlug(fileName), {
 		title,
 		date
@@ -46,22 +45,22 @@ const getAllPostsDataFromFileNames = async (fileNames: string[]): Promise<IPostD
 		allPostsData.push(await getPostData(getSlug(fileName)));
 	}
 	return allPostsData;
-}
+};
 
 export const getAllPostIds = async (): Promise<AllPostIdParams> => {
 	const fileNames = await fs.readdir(postsDirectory);
 
-	return fileNames.map(fileName => {
-		return {
-			params: {
-				id: getSlug(fileName)
-			}
-		};
-	});
+	return fileNames.filter(Boolean).map(fileName => ({
+		params: {
+			id: getSlug(fileName)
+		}
+	}));
 };
 
 export const getPostData = async (slug: string, detail = false): Promise<IPostData> => {
-	const postContent = detail ? MarkdownParser.parse((await fs.readFile(path.join(postsDirectory, getFileName(slug)))).toString()) : "";
+	const postContent = detail
+		? MarkdownParser.parse((await fs.readFile(path.join(postsDirectory, getFileName(slug)))).toString())
+		: "";
 	const metadata = (await getMetadata(slug)) as IMetadata;
 
 	// Combine the data with the id
