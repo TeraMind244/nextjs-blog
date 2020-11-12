@@ -12,16 +12,14 @@ interface IProps {
 const Layout: React.FC<IProps> = ({ children, page = Page.HOME }) => {
 	return (
 		<div className={styles.container}>
-			{page !== Page.CREATE && (
-				<div>
-					<Link href="/create">
-						<a>
-							<button className={`${buttonStyles.button} ${buttonStyles["button-right"]}`}>Create</button>
-						</a>
-					</Link>
-				</div>
-			)}
 			{renderHeadAttributes()}
+			{page !== Page.CREATE && (
+				<Link href="/create">
+					<a>
+						<button className={`${buttonStyles.button} ${buttonStyles.right}`}>Create</button>
+					</a>
+				</Link>
+			)}
 			<header className={styles.header}>
 				{page === Page.HOME ? (
 					<>
@@ -49,7 +47,7 @@ const Layout: React.FC<IProps> = ({ children, page = Page.HOME }) => {
 				<div className={styles.backToHome}>
 					<Link href="/">
 						<a>
-							<button className={`${buttonStyles.button} ${buttonStyles["button-right"]}`}>← Back</button>
+							<button className={`${buttonStyles.button} ${buttonStyles.right}`}>← Back</button>
 						</a>
 					</Link>
 				</div>

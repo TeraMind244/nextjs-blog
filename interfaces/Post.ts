@@ -1,3 +1,4 @@
+import { ParsedUrlQuery } from "querystring";
 import { IMetadata } from "./Metadata";
 
 export type IPostData = IMetadata & {
@@ -6,9 +7,11 @@ export type IPostData = IMetadata & {
 };
 
 interface IAllPostIdParam {
-	params: {
-		id: string
-	};
+	params: IPostId;
+}
+
+export interface IPostId extends ParsedUrlQuery {
+	id: string;
 }
 
 export type AllPostIdParams = IAllPostIdParam[];
