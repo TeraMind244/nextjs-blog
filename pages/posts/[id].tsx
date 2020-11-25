@@ -24,7 +24,7 @@ const Post: NextPage<IProps> = ({ postData }) => {
 				<h1 className={utilStyles.headingXl}>{postData.title}</h1>
 				<Date date={postData.date} />
 				<br />
-				<div dangerouslySetInnerHTML={{ __html: postData.content || "" }} />
+				<div dangerouslySetInnerHTML={{ __html: postData.content }} />
 			</article>
 		</Layout>
 	);

@@ -5,14 +5,18 @@ import { saveFile } from "../utils/FileHelper";
 
 const metadataFilePath = path.join(process.cwd(), "data", "metadata", "metadata.json");
 
-export const getMetadata = async (slug?: string): Promise<Metadata | IMetadata | undefined> => {
+const getMetadatas = async (): Promise<Metadata> => {
 	const metadata = JSON.parse((await fs.readFile(metadataFilePath)).toString());
+	return metadata;
+};
 
-	return slug ? metadata[slug] : metadata;
+export const getMetadata = async (slug: string): Promise<IMetadata | undefined> => {
+	const allMetadata = await getMetadatas();
+	return allMetadata[slug];
 };
 
 export const addMetadata = async (slug: string, metadata: IMetadata): Promise<void> => {
-	const allMetadata = (await getMetadata()) as Metadata;
+	const allMetadata = await getMetadatas();
 	const newData = {
 		...allMetadata,
 		[slug]: metadata

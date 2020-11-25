@@ -1,10 +1,10 @@
+import { useSelector } from "react-redux";
+import { BlogSelectors } from "../store/selectors";
 import MarkdownParser from "../utils/MarkdownParser";
 
-interface IProps {
-	markdown: string;
-}
+const MarkdownPreview: React.FC = () => {
+	const markdown = useSelector(BlogSelectors.content);
 
-const MarkdownPreview: React.FC<IProps> = ({ markdown }) => {
 	return <div dangerouslySetInnerHTML={{ __html: MarkdownParser.parse(markdown) }}></div>;
 };
 
