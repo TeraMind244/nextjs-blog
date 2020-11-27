@@ -22,7 +22,7 @@ const ACTION_MAP: IActionMap = {
 };
 
 export namespace BlogReducers {
-	export const reduceBlog = (state = INITIAL_STATE, action: Action<any>): IStateProps => {
+	export const reducer = (state = INITIAL_STATE, action: Action<any>): IStateProps => {
 		return ACTION_MAP[action.type]?.(state, action) || state;
 	};
 }

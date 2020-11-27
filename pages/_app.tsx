@@ -7,7 +7,7 @@ import { BlogReducers } from "../store/reducers";
 import "../styles/globals.css";
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
-	const store = createStore(BlogReducers.reduceBlog, composeWithDevTools(applyMiddleware()));
+	const store = createStore(BlogReducers.reducer, composeWithDevTools(applyMiddleware()));
 
 	return (
 		<Provider store={store}>
