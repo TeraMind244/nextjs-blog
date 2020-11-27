@@ -1,11 +1,20 @@
-import { useSelector } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
+import { IStateProps } from "../store/reducers";
 import { BlogSelectors } from "../store/selectors";
 import MarkdownParser from "../utils/MarkdownParser";
 
-const MarkdownPreview: React.FC = () => {
-	const markdown = useSelector(BlogSelectors.content);
+interface IOwnProps {
+	content: string;
+}
 
-	return <div dangerouslySetInnerHTML={{ __html: MarkdownParser.parse(markdown) }}></div>;
+const MarkdownPreview: React.FC<IOwnProps> = ({ content }) => {
+	return <div dangerouslySetInnerHTML={{ __html: MarkdownParser.parse(content) }}></div>;
 };
 
-export default MarkdownPreview;
+const mapStateToProps: MapStateToProps<IOwnProps, {}, IStateProps> = state => {
+	return {
+		content: BlogSelectors.content(state)
+	};
+};
+
+export default connect(mapStateToProps)(MarkdownPreview);
