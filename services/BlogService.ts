@@ -61,7 +61,7 @@ export const getPostData = async (slug: string, detail = false): Promise<IPostDa
 	const postContent = detail
 		? MarkdownParser.parse((await fs.readFile(path.join(postsDirectory, getFileName(slug)))).toString())
 		: "";
-	const metadata = (await getMetadata(slug)) as IMetadata;
+	const metadata = await getMetadata(slug);
 
 	// Combine the data with the id
 	return {

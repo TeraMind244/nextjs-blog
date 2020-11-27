@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { authorName, Page, siteTitle } from "../constant";
 import buttonStyles from "../styles/button.module.css";
@@ -56,7 +57,15 @@ const Layout: React.FC<IProps> = ({ children, page = Page.HOME }) => {
 	);
 };
 
-const renderAvatar = (className: string) => <img src="/images/square.jpg" className={className} alt={authorName} />;
+const renderAvatar = (className: string) => (
+	<Image
+		width={className.includes(styles.headerImage) ? 120 : 160}
+		height={className.includes(styles.headerImage) ? 120 : 160}
+		src="/images/square.jpg"
+		className={className}
+		alt={authorName}
+	/>
+);
 
 const renderHeadAttributes = () => (
 	<Head>

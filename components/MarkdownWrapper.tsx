@@ -1,4 +1,7 @@
 import { ChangeEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BlogActions } from "../store/actions";
+import { BlogSelectors } from "../store/selectors";
 import buttonStyles from "../styles/button.module.css";
 import utilsStyle from "../styles/utils.module.css";
 import { createBlog } from "../utils/RequestHelper";
@@ -6,22 +9,17 @@ import MarkdownEditor from "./MarkdownEditor";
 import MarkdownPreview from "./MarkdownPreview";
 
 const MarkdownWrapper: React.FC = () => {
-	const [markdown, setMarkdown] = useState("");
-	const [title, setTitle] = useState("");
-	const [error, setError] = useState("");
+	const title = useSelector(BlogSelectors.title);
+	const content = useSelector(BlogSelectors.content);
 
-	const onChangeMarkdown = (event: ChangeEvent<HTMLTextAreaElement>) => {
-		if (error) {
-			setError("");
-		}
-		setMarkdown(event.target.value);
-	};
+	const dispatch = useDispatch();
+	const [error, setError] = useState("");
 
 	const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
 		if (error) {
 			setError("");
 		}
-		setTitle(event.target.value);
+		dispatch(BlogActions.setTitle(event.target.value));
 	};
 
 	const onClickSaveButtonHandler = async () => {
@@ -29,10 +27,10 @@ const MarkdownWrapper: React.FC = () => {
 		if (!title) {
 			return setError("Empty title!");
 		}
-		if (!markdown) {
+		if (!content) {
 			return setError("Empty content!");
 		}
-		await createBlog(title, markdown);
+		await createBlog(title, content);
 	};
 
 	return (
@@ -48,10 +46,10 @@ const MarkdownWrapper: React.FC = () => {
 			<div>
 				<div className="error">{error}</div>
 				<div>
-					<MarkdownEditor value={markdown} onChange={onChangeMarkdown} />
+					<MarkdownEditor />
 				</div>
 				<div>
-					<MarkdownPreview markdown={markdown || "&nbsp;"} />
+					<MarkdownPreview />
 				</div>
 			</div>
 			<div className="save-button--wrapper">
