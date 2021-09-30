@@ -33,14 +33,14 @@ function clear(): IStateProps {
 	};
 }
 
-function setTitle(state: IStateProps, action: Action<string>) {
+function setTitle(state: IStateProps, action: Action<string>): IStateProps {
 	return {
 		...state,
 		title: action.payload
 	};
 }
 
-function setContent(state: IStateProps, action: Action<string>) {
+function setContent(state: IStateProps, action: Action<string>): IStateProps {
 	return {
 		...state,
 		content: action.payload
